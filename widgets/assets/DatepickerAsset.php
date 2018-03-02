@@ -22,9 +22,9 @@ class DatepickerAsset extends AssetBundle
 	];
 
 	/**
-	 * @var string plugin laguage
+	 * @var string plugin language
 	 */
-	private static $_lang;
+	public static $language;
 
 	/**
 	 * @inheritdoc
@@ -45,21 +45,8 @@ class DatepickerAsset extends AssetBundle
 	 */
 	protected function registerLocale()
 	{
-		self::$_lang = strtolower(substr(Yii::$app->language, 0, 2));
-
-		if (self::$_lang != 'en')
-			$this->js[] = 'locales/bootstrap-datepicker.' . self::$_lang . '.min.js';
-	}
-
-	/**
-	 * @inheritdoc
-	 * Set default widget language the same as applicaion laguage
-	 */
-	public static function register($view)
-	{
-		parent::register($view);
-
-		$view->registerJs('$.fn.datepicker.defaults.language = "' . self::$_lang . '";');
+		if (self::$language != 'en')
+			$this->js[] = 'locales/bootstrap-datepicker.' . self::$language . '.min.js';
 	}
 
 }

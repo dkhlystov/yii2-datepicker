@@ -2,6 +2,7 @@
 
 namespace dkhlystov\widgets;
 
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\InputWidget;
@@ -22,6 +23,11 @@ class Datepicker extends InputWidget
 	public $options = ['class' => 'form-control'];
 
 	/**
+	 * @var string
+	 */
+	private $_language;
+
+	/**
 	 * @inheritdoc
 	 */
 	public function init()
@@ -31,6 +37,7 @@ class Datepicker extends InputWidget
 		if (empty($this->options['id']))
 			$this->options['id'] = $this->id;
 
+		$this->prepareLanguage();
 		$this->registerClientScripts();
 	}
 
@@ -42,6 +49,17 @@ class Datepicker extends InputWidget
 		echo Html::activeTextInput($this->model, $this->attribute, $this->options);
 	}
 
+	private function prepareLanguage()
+	{
+		if (empty($this->clientOptions['language'])) {
+			$this->clientOptions['language'] = strtolower(substr(Yii::$app->language, 0, 2));
+		}
+
+		$this->_language = $this->clientOptions['language'];
+		if ($this->clientOptions['language'] == 'en')
+			unset($this->clientOptions['language']);
+	}
+
 	/**
 	 * Registration client scripts and initializing plugin
 	 * @return void
@@ -50,6 +68,7 @@ class Datepicker extends InputWidget
 	{
 		$view = $this->getView();
 
+		DatepickerAsset::$language = $this->_language;
 		DatepickerAsset::register($view);
 
 		$options = Json::htmlEncode($this->clientOptions);
