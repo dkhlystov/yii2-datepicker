@@ -15,12 +15,17 @@ class Datepicker extends InputWidget
 	/**
 	 * @var array additional options for jquery bootstrap datepicker widget
 	 */
-	public $clientOptions = ['format' => 'yyyy-mm-dd'];
+	public $clientOptions = [];
 
 	/**
 	 * @inheritdoc
 	 */
 	public $options = ['class' => 'form-control'];
+
+	/**
+	 * @var boolean provides a way to avoid conflict with jQuery UI datepicker plugin
+	 */
+	public $juiNoConflict = true;
 
 	/**
 	 * @var string
@@ -69,9 +74,13 @@ class Datepicker extends InputWidget
 		$view = $this->getView();
 
 		DatepickerAsset::$language = $this->_language;
+		DatepickerAsset::$juiNoConflict = $this->juiNoConflict;
 		DatepickerAsset::register($view);
 
-		$options = Json::htmlEncode($this->clientOptions);
+		$clientOptions = array_replace([
+			'format' => 'yyyy-mm-dd',
+		], $this->clientOptions);
+		$options = Json::htmlEncode($clientOptions);
 
 		$view->registerJs("$('#{$this->options['id']}').datepicker($.extend({zIndexOffset: 100}, $options));");
 	}

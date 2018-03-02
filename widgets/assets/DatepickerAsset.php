@@ -27,11 +27,19 @@ class DatepickerAsset extends AssetBundle
 	public static $language;
 
 	/**
+	 * @var boolean
+	 */
+	public static $juiNoConflict = false;
+
+	/**
 	 * @inheritdoc
 	 */
 	public function init()
 	{
 		parent::init();
+
+		if (self::$juiNoConflict)
+			$this->depends[] = 'yii\jui\JuiAsset';
 
 		$this->css[] = 'css/bootstrap-datepicker3' . (YII_DEBUG ? '' : '.min') . '.css';
 		$this->js[] = 'js/bootstrap-datepicker' . (YII_DEBUG ? '' : '.min') . '.js';
