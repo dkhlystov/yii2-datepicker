@@ -7,54 +7,60 @@ use yii\web\AssetBundle;
 
 class DatepickerAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@bower/bootstrap-datepicker/dist';
 
-	/**
-	 * @inheritdoc
-	 */
-	public $sourcePath = '@bower/bootstrap-datepicker/dist';
+    /**
+     * @inheritdoc
+     */
+    public $depends = [
+        'yii\web\JqueryAsset',
+    ];
 
-	/**
-	 * @inheritdoc
-	 */
-	public $depends = [
-		'yii\bootstrap\BootstrapAsset',
-		'yii\web\JqueryAsset',
-	];
+    /**
+     * @var string using styles bootstrap-datepicker|bootstrap-datepicker3|null
+     */
+    public static $style = 'bootstrap-datepicker3';
 
-	/**
-	 * @var string plugin language
-	 */
-	public static $language;
+    /**
+     * @var string plugin language
+     */
+    public static $language;
 
-	/**
-	 * @var boolean
-	 */
-	public static $juiNoConflict = false;
+    /**
+     * @var boolean
+     */
+    public static $juiNoConflict = false;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function init()
-	{
-		parent::init();
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
 
-		if (self::$juiNoConflict)
-			$this->depends[] = 'yii\jui\JuiAsset';
+        if (self::$juiNoConflict) {
+            $this->depends[] = 'yii\jui\JuiAsset';
+        }
 
-		$this->css[] = 'css/bootstrap-datepicker3' . (YII_DEBUG ? '' : '.min') . '.css';
-		$this->js[] = 'js/bootstrap-datepicker' . (YII_DEBUG ? '' : '.min') . '.js';
+        $this->js[] = 'js/bootstrap-datepicker' . (YII_DEBUG ? '' : '.min') . '.js';
+        if (!empty(self::$style)) {
+            $this->css[] = 'css/' . self::$style . (YII_DEBUG ? '' : '.min') . '.css';
+        }
 
-		$this->registerLocale();
-	}
+        $this->registerLocale();
+    }
 
-	/**
-	 * Registration of language file
-	 * @return void
-	 */
-	protected function registerLocale()
-	{
-		if (self::$language != 'en')
-			$this->js[] = 'locales/bootstrap-datepicker.' . self::$language . '.min.js';
-	}
-
+    /**
+     * Registration of language file
+     * @return void
+     */
+    protected function registerLocale()
+    {
+        if (self::$language != 'en') {
+            $this->js[] = 'locales/bootstrap-datepicker.' . self::$language . '.min.js';
+        }
+    }
 }
